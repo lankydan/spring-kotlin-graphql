@@ -8,4 +8,10 @@ type Person {
     id: ID,
     firstName: String,
     lastName: String
+    relationships: [Relationship]
+}
+
+type Relationship {
+    relation: Person,
+    relationship: String
 }
