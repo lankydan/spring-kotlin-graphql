@@ -1,13 +1,12 @@
 package dev.lankydan.people.graphql.fetchers
 
-import dev.lankydan.people.data.Person
 import dev.lankydan.people.data.PersonRepository
 import dev.lankydan.people.data.RelationshipRepository
 import dev.lankydan.people.graphql.TypedDataFetcher
+import dev.lankydan.people.graphql.schema.dtos.PersonDTO
 import dev.lankydan.people.graphql.schema.dtos.RelationshipDTO
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 class PersonRelationshipsDataFetcher(
@@ -17,13 +16,16 @@ class PersonRelationshipsDataFetcher(
 
   // The name of the schema type
   override val typeName = "Person"
+
   // The field that I want this data fetcher to retrieve data for
   override val fieldName = "relationships"
 
   override fun get(environment: DataFetchingEnvironment): List<RelationshipDTO> {
-    return relationshipRepository.findByPersonId(environment.getSource<Person>().id).map {
+    return relationshipRepository.findByPersonId(environment.getSource<PersonDTO>().id).map {
       RelationshipDTO(
-        relation = personRepository.findById(it.relatedPersonId).get(),
+        relation = personRepository.findById(it.relatedPerson.id)
+          .map { person -> PersonDTO(person.id, person.firstName, person.lastName) }
+          .get(),
         relationship = it.relation
       )
     }

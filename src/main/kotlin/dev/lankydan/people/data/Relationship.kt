@@ -1,9 +1,7 @@
 package dev.lankydan.people.data
 
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "relationships")
 data class Relationship(
@@ -11,8 +9,9 @@ data class Relationship(
   val id: UUID,
   @Column(name = "person_id")
   val personId: UUID,
-  @Column(name = "related_person_id")
-  val relatedPersonId: UUID,
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "related_person_id")
+  val relatedPerson: Person,
   @Column(name = "relation")
   val relation: String
 )
