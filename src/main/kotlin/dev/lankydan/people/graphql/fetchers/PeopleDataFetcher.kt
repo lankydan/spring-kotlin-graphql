@@ -13,6 +13,6 @@ class PeopleDataFetcher(private val personRepository: PersonRepository) : TypedD
   override val fieldName = "people"
 
   override fun get(environment: DataFetchingEnvironment): List<PersonDTO> {
-    return personRepository.findAll().map { PersonDTO(it.id, it.firstName, it.lastName) }
+    return personRepository.findAll().map { PersonDTO(it.id, it.firstName, it.lastName, emptyList()) }
   }
 }

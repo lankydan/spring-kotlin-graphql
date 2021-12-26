@@ -21,13 +21,16 @@ class PersonRelationshipsDataFetcher(
   override val fieldName = "relationships"
 
   override fun get(environment: DataFetchingEnvironment): List<RelationshipDTO> {
-    return relationshipRepository.findByPersonId(environment.getSource<PersonDTO>().id).map {
-      RelationshipDTO(
-        relation = personRepository.findById(it.relatedPerson.id)
-          .map { person -> PersonDTO(person.id, person.firstName, person.lastName) }
-          .get(),
-        relationship = it.relation
-      )
+    val source = environment.getSource<PersonDTO>()
+    return source.relationships.ifEmpty {
+      relationshipRepository.findByPersonId(environment.getSource<PersonDTO>().id).map {
+        RelationshipDTO(
+          relation = personRepository.findById(it.relatedPerson.id)
+            .map { person -> PersonDTO(person.id, person.firstName, person.lastName, emptyList()) }
+            .get(),
+          relationship = it.relation
+        )
+      }
     }
   }
 }

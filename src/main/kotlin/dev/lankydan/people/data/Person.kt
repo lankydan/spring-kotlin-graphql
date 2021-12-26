@@ -3,7 +3,8 @@ package dev.lankydan.people.data
 import java.util.*
 import javax.persistence.*
 
-@Entity(name = "people")
+@Entity(name = "Person")
+@Table(name = "people")
 data class Person(
   @Id
   val id: UUID,

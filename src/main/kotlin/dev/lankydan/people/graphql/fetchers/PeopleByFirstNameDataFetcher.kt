@@ -13,6 +13,7 @@ class PeopleByFirstNameDataFetcher(private val personRepository: PersonRepositor
   override val fieldName = "peopleByFirstName"
 
   override fun get(environment: DataFetchingEnvironment): List<PersonDTO> {
-    return personRepository.findAllByFirstName(environment.getArgument("firstName")).map { PersonDTO(it.id, it.firstName, it.lastName) }
+    return personRepository.findAllByFirstName(environment.getArgument("firstName"))
+      .map { PersonDTO(it.id, it.firstName, it.lastName, emptyList()) }
   }
 }
