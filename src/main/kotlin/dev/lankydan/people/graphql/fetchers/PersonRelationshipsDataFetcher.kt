@@ -1,6 +1,5 @@
 package dev.lankydan.people.graphql.fetchers
 
-import dev.lankydan.people.data.PersonRepository
 import dev.lankydan.people.data.RelationshipRepository
 import dev.lankydan.people.graphql.TypedDataFetcher
 import dev.lankydan.people.graphql.schema.dtos.PersonDTO
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class PersonRelationshipsDataFetcher(
-  private val personRepository: PersonRepository,
   private val relationshipRepository: RelationshipRepository
 ) : TypedDataFetcher<List<RelationshipDTO>> {
 
