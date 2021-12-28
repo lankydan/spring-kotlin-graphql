@@ -3,6 +3,7 @@ package dev.lankydan.people.graphql.fetchers
 import dev.lankydan.people.data.PersonRepository
 import dev.lankydan.people.graphql.TypedDataFetcher
 import dev.lankydan.people.graphql.schema.dtos.PersonDTO
+import dev.lankydan.people.graphql.schema.dtos.toDTO
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
 
@@ -14,6 +15,6 @@ class PeopleByFirstNameDataFetcher(private val personRepository: PersonRepositor
 
   override fun get(environment: DataFetchingEnvironment): List<PersonDTO> {
     return personRepository.findAllByFirstName(environment.getArgument("firstName"))
-      .map { PersonDTO(it.id, it.firstName, it.lastName, emptyList()) }
+      .map { it.toDTO(mapRelationships = false) }
   }
 }

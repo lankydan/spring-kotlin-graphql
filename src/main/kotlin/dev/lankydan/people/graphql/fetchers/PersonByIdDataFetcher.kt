@@ -3,7 +3,7 @@ package dev.lankydan.people.graphql.fetchers
 import dev.lankydan.people.data.PersonRepository
 import dev.lankydan.people.graphql.TypedDataFetcher
 import dev.lankydan.people.graphql.schema.dtos.PersonDTO
-import dev.lankydan.people.graphql.schema.dtos.RelationshipDTO
+import dev.lankydan.people.graphql.schema.dtos.toDTO
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.DataFetchingFieldSelectionSet
 import org.springframework.stereotype.Component
@@ -22,23 +22,6 @@ class PersonByIdDataFetcher(private val personRepository: PersonRepository) : Ty
     } else {
       personRepository.findById(UUID.fromString(environment.getArgument("id")))
     }
-    return person.map { person ->
-      PersonDTO(
-        id = person.id,
-        firstName = person.firstName,
-        lastName = person.lastName,
-        relationships = person.relationships.map { relationship ->
-          RelationshipDTO(
-            relation = PersonDTO(
-              id = relationship.relatedPerson.id,
-              firstName = relationship.relatedPerson.firstName,
-              lastName = relationship.relatedPerson.lastName,
-              relationships = emptyList()
-            ),
-            relationship = relationship.relation
-          )
-        }
-      )
-    }
+    return person.map { it.toDTO(mapRelationships = true) }
   }
 }
