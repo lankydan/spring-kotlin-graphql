@@ -13,6 +13,6 @@ data class Relationship(
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "related_person_id")
   val relatedPerson: Person,
-  @Column(name = "relation")
-  val relation: String
+  @Column(name = "relationship")
+  val relationship: String
 )

@@ -10,6 +10,6 @@ data class RelationshipDTO(
 fun Relationship.toDTO(): RelationshipDTO {
   return RelationshipDTO(
     relation = relatedPerson.toDTO(mapRelationships = false),
-    relationship = relation
+    relationship
   )
 }
