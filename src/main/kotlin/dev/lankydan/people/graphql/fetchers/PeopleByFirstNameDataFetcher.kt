@@ -7,6 +7,21 @@ import dev.lankydan.people.graphql.schema.dtos.toDTO
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
 
+/**
+ * [TypedDataFetcher] that handles incoming "peopleByFirstName" queries.
+ *
+ * Example query:
+ *
+ * ```graphql
+ * query {
+ *   peopleByFirstName(firstName: "Dan") {
+ *     firstName
+ *     lastName
+ *     id
+ *   }
+ * }
+ * ```
+ */
 @Component
 class PeopleByFirstNameDataFetcher(private val personRepository: PersonRepository) : TypedDataFetcher<List<PersonDTO>> {
 

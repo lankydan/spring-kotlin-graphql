@@ -8,6 +8,29 @@ import dev.lankydan.people.graphql.schema.dtos.toDTO
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
 
+/**
+ * [TypedDataFetcher] that maps the "relationships" field in the "Person" schema type.
+ *
+ * Example query:
+ *
+ * ```graphql
+ * query {
+ *   people {
+ *     firstName
+ *     lastName
+ *     id
+ *     relationships {
+ *       relation {
+ *         firstName
+ *         lastName
+ *         id
+ *       }
+ *       relationship
+ *     }
+ *   }
+ * }
+ * ```
+ */
 @Component
 class PersonRelationshipsDataFetcher(
   private val relationshipRepository: RelationshipRepository
