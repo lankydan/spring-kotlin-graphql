@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
-// implement family graphql field that does the same as relationships but filters on whether the person is family
 interface PersonRepository : CrudRepository<Person, UUID> {
 
   fun findAllByFirstName(firstName: String): List<Person>

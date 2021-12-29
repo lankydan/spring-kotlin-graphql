@@ -3,6 +3,9 @@ package dev.lankydan.people.graphql.schema.dtos
 import dev.lankydan.people.data.Person
 import java.util.*
 
+/**
+ * DTO representation of [Person] to be return from GraphQL queries.
+ */
 data class PersonDTO(
   val id: UUID,
   val firstName: String,

@@ -9,26 +9,31 @@ import graphql.schema.idl.TypeRuntimeWiring.newTypeWiring
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.io.File
-import java.net.URL
 
+/**
+ * Configures an instance of [GraphQL] by reading the `schema.graphqls` resources file and registering all [TypedDataFetcher] instances.
+ */
 @Configuration
 class GraphQLConfiguration(private val dataFetchers: List<TypedDataFetcher<*>>) {
 
   @Bean
   fun graphQL(): GraphQL {
-    val url: URL = this::class.java.classLoader.getResource("schema.graphqls") ?: throw IllegalStateException("The resource does not exist")
-    val sdl: String = File(url.toURI()).readText()
-    val graphQLSchema: GraphQLSchema = buildSchema(sdl)
+    val typeRegistry = SchemaParser().parse(readSchema())
+    val runtimeWiring = buildWiring()
+    val schemaGenerator = SchemaGenerator()
+    val graphQLSchema: GraphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring)
     return GraphQL.newGraphQL(graphQLSchema).build()
   }
 
-  private fun buildSchema(sdl: String): GraphQLSchema {
-    val typeRegistry = SchemaParser().parse(sdl)
-    val runtimeWiring = buildWiring()
-    val schemaGenerator = SchemaGenerator()
-    return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring)
+  private fun readSchema(): String {
+    return this::class.java.classLoader.getResource("schema.graphqls")
+      ?.let { url -> File(url.toURI()).readText() }
+      ?: throw IllegalStateException("The resource does not exist")
   }
 
+  /**
+   * Loops through all injected [TypedDataFetcher] instances and includes them in the output [RuntimeWiring] instance.
+   */
   private fun buildWiring(): RuntimeWiring {
     val wiring = RuntimeWiring.newRuntimeWiring()
     for (dataFetcher in dataFetchers) {

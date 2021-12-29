@@ -13,10 +13,7 @@ class PersonRelationshipsDataFetcher(
   private val relationshipRepository: RelationshipRepository
 ) : TypedDataFetcher<List<RelationshipDTO>> {
 
-  // The name of the schema type
   override val typeName = "Person"
-
-  // The field that I want this data fetcher to retrieve data for
   override val fieldName = "relationships"
 
   override fun get(environment: DataFetchingEnvironment): List<RelationshipDTO> {
