@@ -9,6 +9,7 @@ type Person {
     firstName: String,
     lastName: String
     relationships: [Relationship]
+    family: [Relationship]
 }
 
 type Relationship {
