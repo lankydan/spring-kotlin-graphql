@@ -5,7 +5,7 @@ import graphql.schema.idl.RuntimeWiring
 import org.springframework.stereotype.Component
 
 /**
- * [TypedDataFetcher] is a instance of a [DataFetcher] that specifies schema types and fields it processes.
+ * [TypedDataFetcher] is an instance of a [DataFetcher] that specifies the schema type and field it processes.
  *
  * Instances of [TypedDataFetcher] are registered into an instance of [RuntimeWiring] after being picked up by Spring (the instances must be
  * annotated with @[Component] or a similar annotated to be injected).
